@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="eel.js"></script>
+
+    <title>MyScreenTime</title>
+</head>
+<body>
+    <h1 id="title">MyScreenTime</h1>
+    <div class="blocks"></div>
+    <script>
+        eel.expose(delete_blocks);
+        function delete_blocks() {
+            let elem = document.getElementById('blocks_container');
+            let btns = document.getElementById('btn_container');
+            elem.remove();
+            btns.remove();
+
+        }
+        eel.expose(create_globaltime);
+        function create_globaltime(time){
+            globalTime = document.createElement("h2")
+            globalTime.id = "global_time"
+            if (time > 59) {
+                    globalTime.innerText = (time - time%60)/60 + "ч" + time%60 + "м";
+            }else{
+                    globalTime.innerText = "0ч" + time + "м";
+            }
+
+            document.body.appendChild(globalTime);
+        }
+
+        eel.expose(create_appsblocks);
+        function create_appsblocks(apps, time){
+            blocks = document.createElement("div");
+            blocks.id = "blocks_container"
+            document.body.appendChild(blocks);
+            for (let index = 0; index < 5; index++) {
+                let block = document.createElement("div");
+                block.id = "block_string";
+
+                let app_name = document.createElement("span");
+                let app_time = document.createElement("span");
+                app_name.id = "appname"
+                app_time.id = "apptime"
+                app_name.innerText = apps[index];
+                if (app_name.innerText == "undefined"){
+                    app_name.innerText = "-";
+                    app_time.innerText = "-";
+                    block.appendChild(app_name);
+                    block.appendChild(app_time);
+
+                    blocks.appendChild(block);
+                    continue;
+                }
+                //прописать условие
+                if (time[index] > 59) {
+                    app_time.innerText = (time[index] - time[index]%60)/60 + "ч" + time[index]%60 + "м";
+                }else{
+                    app_time.innerText = "0ч" + time[index] + "м";
+                }
+
+                
+                block.appendChild(app_name);
+                block.appendChild(app_time);
+
+                blocks.appendChild(block);
+            }
+            
+            btn_container = document.createElement("div");
+            btn_container.id = "btn_container";
+
+            button_previous = document.createElement("button");
+            button_previous.id = "button";
+            button_previous.innerText = "<-"
+            button_previous.addEventListener("click", eel.previous_page)
+
+            button_next = document.createElement("button");
+            button_next.id = "button";
+            button_next.innerText = "->"
+            button_next.addEventListener("click", eel.next_page);
+
+            btn_container.appendChild(button_previous);
+            btn_container.appendChild(button_next);
+            document.body.appendChild(btn_container);
+        }
+
+    </script>
+</body>
+</html>
