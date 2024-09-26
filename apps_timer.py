@@ -5,19 +5,22 @@ import sqlite3
 import datetime
 import json
 from apscheduler.schedulers.blocking import BlockingScheduler
+import psutil
+import win32process, win32gui
 
 scheduler = BlockingScheduler()
 
 class AppsTimer:
 
-    # apps_and_time = {"wot":43, "Minecraft":999, "spotify":12, "VSCode":34, "FireFox":345,
-    #                  "Dota2":1, "Word":1345,"fsdgfdh":24,"mnb":456, "444":111, "ee":765,
-    #                  "jojo":21}
     apps_and_time = {}
-    last_date = datetime.date.today().isoformat()
+    # last_date = datetime.date.today().isoformat()
 
 
-    def __init__(self) -> None:
+    def __init__(self, date:str = None) -> None:
+        if date == None:
+            self.last_date = datetime.date.today().isoformat()
+        else:
+            self.last_date = date 
         with sqlite3.connect("database.db") as db:
             cursor = db.cursor()
             cursor.execute("""CREATE TABLE IF NOT EXISTS data_apps (
@@ -31,11 +34,11 @@ class AppsTimer:
                 self.apps_and_time = json.loads(result[0])
                 print(self.apps_and_time)
             
-
-    
+  
     def get_global_time(self,):
         return sum(self.apps_and_time.values())
     
+
     def get_five_apps(self, page:int):
         sorted_apps = sorted(self.apps_and_time.items(), key=lambda item: item[1], reverse=True)
         
@@ -43,25 +46,20 @@ class AppsTimer:
         time = [item[1] for item in sorted_apps[(page-1)*5:page*5]]
         return apps, time
     
+
     def __get_apptitle(self):
-        w = win32gui
-        app_title = w.GetWindowText(w.GetForegroundWindow())
+        try:
+            hwnd = win32gui.GetForegroundWindow()
+            _,pid = win32process.GetWindowThreadProcessId(hwnd)
+            process = psutil.Process(pid)
+
+            app_title = process.name().split(".")[0]
+        except:
+            return ""
         
-        if (not "-" in app_title and not "—" in app_title and not re.findall("[(]\d+[)]",app_title) and not "Личный:" in app_title):
-            return app_title
-        
-        if ":" in app_title:
-            splited_title = app_title.split(":")[-1][1:]
-            return splited_title
-        elif "-" in app_title:
-            splited_title = app_title.split("-")
-            return splited_title[-1][1:]
-        elif "—" in app_title:
-            splited_title = app_title.split("—")
-            return splited_title[-1][1:]
-        elif re.findall("[(]\d+[)]", app_title):
-            return "Telegram"
+        return app_title
     
+
     def update_db(self, date, apps):
         with sqlite3.connect("database.db") as db:
             cursor = db.cursor()
@@ -88,7 +86,7 @@ class AppsTimer:
 apps_timer = AppsTimer()
 
 
-@scheduler.scheduled_job("interval", seconds=3)
+@scheduler.scheduled_job("interval", seconds=1)
 def main():
     apps_timer.append_time()
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="eel.js"></script>
+
+    
+    <title>MyScreenTimeHistory</title>
+</head>
+<body>
+    <h1 id="title">MyScreenTime</h1>
+      
+    <div class="menu">
+        <a href="index.html">
+            <button class="menubtn", onclick="eel.recreate_appstimer()">🏠<h4 class="invisible">Home</h4></button>
+        </a>
+        <a href="history.html">
+            <button class="menubtn">🕮<h4 class="invisible">History</h4></button>
+        </a>
+        <a href="index.html">
+            <button class="menubtn">🛈<h4 class="invisible">About</h4></button>
+        </a>    
+    </div>
+
+    <h4 id="titleh4">Введите дату ГОД-МЕСЯЦ-ДЕНЬ</h4>  
+
+    <div id="searchhistory">
+        <input type="text" id="histdate" placeholder="YYYY-MM-DD">
+        <a href="index.html">
+            <button id="findbtn" onclick="get_from_history()">Найти</button>
+        <a>
+    </div>
+
+    <script>
+        function get_from_history(){
+            eel.recreate_appstimer(date=document.querySelector('#histdate').value);
+        }
+
+    </script>
+
+
+
+
+</body>
+</html>

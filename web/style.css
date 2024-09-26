@@ -11,6 +11,12 @@ body {
     animation-name: title_anim;
 }
 
+#titleh4{
+    /* font-size: medium; */
+    text-align: center;
+    color: rgb(0, 129, 112);
+}
+
 #global_time {
     text-align: center;
     color: rgb(0, 129, 112);
@@ -52,6 +58,7 @@ body {
     }
 }
 
+
 #block_string {
     display: flex;
     justify-content: space-between;
@@ -82,15 +89,18 @@ body {
 }
 
 #btn_container {
-    scale:25px;
+    width: 50%;
+    margin: 30px auto;
+    /* scale:25px; */
     bottom: 45px;
-    position: absolute;
-    left: 25%;
+    /* position: absolute; */
+    /* left: 25%; */
     animation-duration: 1s;
     animation-name: scale;
 }
 
 #button {
+    width: 50%;
     background-color: rgb(217, 95, 89); 
     border: none;
     color: white;
@@ -99,12 +109,61 @@ body {
     text-decoration: none;
     display: inline-block; 
     font-size: 16px; 
-    margin: 4px 2px; 
+    margin: 3px auto; 
     cursor: pointer; 
     border-radius: 5px; 
   }
   
 #button:hover {
     background-color: rgb(213, 85, 78); 
+}
+
+.invisible {
+    display: none;
+}
+
+.menubtn {
+    width: 30%;
+    height: 15%;
+    background-color: rgb(35, 45, 63);
+    border: none;
+}
+
+.menubtn:hover .invisible {
+    display: block;
+    animation-duration: .3s;
+    animation-name: scale
+}
+
+.menubtn:hover {
+    background-color: rgb(60, 109, 125);
+}
+
+.menu {
+    width: 50%;
+    margin: 0 auto;
+}
+
+#searchhistory {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 3%;
+}
+
+#findbtn {
+    width: 50%;
+    margin: 4px 25%;
+    background-color: rgb(35, 45, 63);
+    border: none;
+}
+
+#findbtn:hover {
+    background-color: rgb(60, 109, 125);
+}
+
+
+#histdate {
+    width: 100%;
+    background-color: rgb(73, 32, 73);
 }
 

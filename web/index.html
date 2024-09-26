@@ -12,6 +12,8 @@
     <h1 id="title">MyScreenTime</h1>
     <div class="blocks"></div>
     <script>
+        eel.create_home_page();
+
         eel.expose(delete_blocks);
         function delete_blocks() {
             let elem = document.getElementById('blocks_container');
@@ -89,5 +91,17 @@
         }
 
     </script>
+    <div class="menu">
+        <a href="index.html">
+            <button class="menubtn", onclick="eel.recreate_appstimer()">🏠<h4 class="invisible">Home</h4></button>
+        </a>
+        <a href="history.html">
+            <button class="menubtn">🕮<h4 class="invisible">History</h4></button>
+        </a>
+        <a href="index.html">
+            <button class="menubtn">🛈<h4 class="invisible">About</h4></button>
+        </a>    
+    </div>
+    
 </body>
 </html>
