@@ -1,12 +1,12 @@
-from time import sleep
-import re
+import os
 import win32gui
 import sqlite3
 import datetime
 import json
-from apscheduler.schedulers.blocking import BlockingScheduler
 import psutil
+import getpass
 import win32process, win32gui
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 scheduler = BlockingScheduler()
 
@@ -17,11 +17,22 @@ class AppsTimer:
 
 
     def __init__(self, date:str = None) -> None:
+
+        self.user_name = getpass.getuser()
+        self.dir_to_create_folder = rf"C:\Users\{self.user_name}\Documents"
+        self.dir = self.dir_to_create_folder+"\ScreenTime_data"
+
+        try:
+            os.mkdir(self.dir_to_create_folder+"\ScreenTime_data")
+        except FileExistsError:
+            pass 
+
         if date == None:
             self.last_date = datetime.date.today().isoformat()
         else:
             self.last_date = date 
-        with sqlite3.connect("database.db") as db:
+
+        with sqlite3.connect(fr"{self.dir}\database.db") as db:
             cursor = db.cursor()
             cursor.execute("""CREATE TABLE IF NOT EXISTS data_apps (
                            date STRING NOT NULL,
@@ -32,7 +43,6 @@ class AppsTimer:
             result = cursor.fetchone()
             if result != None:
                 self.apps_and_time = json.loads(result[0])
-                print(self.apps_and_time)
             
   
     def get_global_time(self,):
@@ -61,7 +71,7 @@ class AppsTimer:
     
 
     def update_db(self, date, apps):
-        with sqlite3.connect("database.db") as db:
+        with sqlite3.connect(fr"{self.dir}\database.db") as db:
             cursor = db.cursor()
             cursor.execute("""SELECT date, apps FROM data_apps WHERE date=?""", (date,))
             result = cursor.fetchone()
@@ -81,12 +91,11 @@ class AppsTimer:
         self.apps_and_time[app] = self.apps_and_time.get(app, 0) + 1
         date = datetime.date.today().isoformat()
         self.update_db(date=date, apps=json.dumps(self.apps_and_time))
-        print(app)
 
 apps_timer = AppsTimer()
 
 
-@scheduler.scheduled_job("interval", seconds=1)
+@scheduler.scheduled_job("interval", minutes=1)
 def main():
     apps_timer.append_time()
 

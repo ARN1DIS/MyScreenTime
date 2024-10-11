@@ -164,6 +164,28 @@ body {
 
 #histdate {
     width: 100%;
-    background-color: rgb(73, 32, 73);
+    background-color: rgb(0, 91, 65);
+    color: white;
 }
 
+#describe {
+    text-align: center;
+    color: rgb(0, 129, 112);
+    font-size: x-large;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-bottom: 0px;
+}
+
+#img {
+    transform: scale(0.8);
+}
+
+#links {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#link {
+    margin: 0 7px;
+}

@@ -19,7 +19,7 @@
         <a href="history.html">
             <button class="menubtn">🕮<h4 class="invisible">History</h4></button>
         </a>
-        <a href="index.html">
+        <a href="info.html">
             <button class="menubtn">🛈<h4 class="invisible">About</h4></button>
         </a>    
     </div>
@@ -33,10 +33,57 @@
         <a>
     </div>
 
+    <div class="blocks"></div>
     <script>
         function get_from_history(){
             eel.recreate_appstimer(date=document.querySelector('#histdate').value);
         }
+        eel.call_history();
+        eel.expose(days_time);
+        function days_time(days, time) {
+            blocks = document.createElement("div");
+            blocks.id = "blocks_container"
+            document.body.appendChild(blocks);
+
+            for (let index = 0; index < days.length; index++) {
+                let block = document.createElement("a");
+                block.id = "block_string";
+                block.href = "index.html";
+                block.addEventListener("click", function(){
+                    eel.recreate_appstimer(days[index]);
+                }, false);
+
+
+                let day = document.createElement("span");
+                let day_time = document.createElement("span");
+                day.id = "appname"
+                day_time.id = "apptime" //id от старых штук в css, чтобы 10 раз одно и тоже не писать
+
+                day.innerText = days[index];
+                
+                if (day.innerText == "undefined"){
+                    day.innerText = "-";
+                    day_time.innerText = "-";
+                    block.appendChild(day);
+                    block.appendChild(day_time);
+                    blocks.appendChild(block);
+                    continue;
+                }
+                
+                if (time[index] > 59) {
+                    day_time.innerText = (time[index] - time[index]%60)/60 + "ч" + time[index]%60 + "м";
+                }else{
+                    day_time.innerText = "0ч" + time[index] + "м";
+                }
+
+                block.appendChild(day);
+                block.appendChild(day_time);
+                blocks.appendChild(block);
+
+            }
+        }
+
+        days_time();
 
     </script>
 
